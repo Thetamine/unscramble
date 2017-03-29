@@ -1,0 +1,15 @@
+.stats {
+    display: inline-block;
+}
+
+ul {
+    display: inline;
+}
+
+#pointsText {
+    display: inline-block;
+}
+
+#chancesText {
+    display: inline-block;
+}

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Unscramble</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1 id="title">Unscramble the Word!</h1>
+    <h2 id="description">You get 3 tries to unscramble the word, fail and you're out!  Get it right however, and you get a point!</h2>
+    
+    <ul>
+        <li><p id="pointsText">Points:</p><div  class="stats" id="points">&nbsp; 0</div></li>
+        <li><p id="chancesText">Chances:</p><div class="stats" id="chances">&nbsp; 3</div></li>
+    </ul>
+    <div id="key"></div>
+    <div id="randomWord"></div>
+    
+    <div id="input">
+        <input type="text" id="guessField">
+        <button id="submit">Submit</button>
+    </div>
+    
+    <div id="responseTest"></div>
+    
+    <script type="text/javascript">
+
+        var points = 0;
+        var chances = 3;
+        var wordArray = ["happy", 
+                         "jogging", 
+                         "action", 
+                         "freaky",
+                         "bored",
+                         "apple",
+                         "breadcrumb",
+                         "journey",
+                         "focus",
+                         "appetite"
+                        ];
+        
+        String.prototype.randomize = function(){
+            var a = this.split(""),
+                n = a.length;
+            
+            for(var i = n - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                var tmp = a[i];
+                a[i] = a[j];
+                a[j] = tmp;
+            }
+            return a.join("" + " ");
+        };    
+        
+        function displayRandWord() {
+            var randomizer = wordArray[Math.floor(Math.random() * wordArray.length)];
+            var displayed_word = randomizer;
+            var displayed_word_upper = displayed_word.toUpperCase();
+            document.getElementById("key").innerHTML = displayed_word_upper;
+            key.style.display='none';
+            document.getElementById("randomWord").innerHTML = displayed_word_upper.randomize();
+              
+        };
+        
+        
+        
+        function spellCheck(){
+            var correct_word = document.getElementById("key").innerHTML;
+            var attempt = document.getElementById("guessField").value;
+            console.log("The correct word is: " + correct_word);
+            console.log("The User's Guess is: " + attempt);
+            console.log("Points = " + points + " Chances = " + chances);
+            if(attempt === correct_word) {
+                document.getElementById("responseTest").innerHTML = "Correct!";
+                document.getElementById("points").innerHTML = ++points;
+            } else {
+                document.getElementById("responseTest").innerHTML = "Incorrect!";
+                document.getElementById("chances").innerHTML = --chances;                
+                if(chances === 0) {
+                    document.getElementById('title').innerHTML='';
+                    document.getElementById('description').innerHTML='';
+                    document.getElementById('pointsText').innerHTML='';
+                    document.getElementById('chancesText').innerHTML='';
+                    document.getElementById('points').innerHTML='';
+                    document.getElementById('chances').innerHTML='';
+                    document.getElementById('randomWord').innerHTML='';
+                    document.getElementById('input').innerHTML='';
+                    document.getElementById('responseTest').innerHTML='';
+                    document.getElementById('title').innerHTML='Game Over!';
+                }
+
+            }
+            
+        };
+        
+        function newRound(){
+            var response = document.getElementById("responseTest").innerHTML;
+            console.log("response: " + response)
+            if(response === "Correct!") {
+                console.log("Success!");
+                displayRandWord();
+                document.getElementById("responseTest").innerHTML='';
+                document.getElementById("guessField").value='';
+            }
+            else {
+                console.log("Incorrect! Try again Please: ")
+            }
+        };
+        
+        document.getElementById("submit").addEventListener('click', spellCheck);
+        document.getElementById("submit").addEventListener('click', newRound);
+
+        window.addEventListener('load', displayRandWord);
+    </script>
+</body>
+</html>
